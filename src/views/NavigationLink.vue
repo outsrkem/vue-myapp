@@ -47,7 +47,7 @@ export default {
   },
   mounted () {
     // 发送请求
-    const url = '/api/v1/jsontest'
+    const url = '/api/v1/navigation/links'
     axios.get(url).then(response => {
       const result = response.data
       const linkData = result.response.items.map(itme => ({
