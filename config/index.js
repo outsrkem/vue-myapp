@@ -12,8 +12,9 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://127.0.0.1:5000/api',
+        target: 'https://www.yonge.com:443/api',
         changeOrigin: true,
+        "secure": false, //配置关闭证书签名验证
         pathRewrite: {
           '^/api': ''
         }
