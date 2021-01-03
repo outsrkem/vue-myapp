@@ -12,6 +12,11 @@
           <!--按钮开始-->
           <div class="btn-toolbar mb-2 mb-md-0">
             <div class="btn-group mr-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary" @click="getClustersData">刷新</button>
+            </div>
+          </div>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group mr-2">
               <addCluster/>
             </div>
           </div>
@@ -110,8 +115,41 @@ export default {
   },
   components: {
     addCluster
+  },
+  methods: {
+    getClustersData () {
+      this.clustersdata = null
+      const options = {
+        method: 'GET',
+        headers: {'Content-Type': 'application/json'},
+        url: '/api/v1/common/kubernetes/cluster'
+      }
+      // 发送请求
+      axios(options).then(res => {
+        const result = res.data
+        const clustersdata = result.response.items.map(itme => ({
+          id: itme.id,
+          clusterName: itme.clusterName,
+          userName: itme.userName,
+          currentContext: itme.currentContext,
+          server: itme.server,
+          creationTime: itme.creationTime,
+          status: itme.status
+        }))
+        this.clustersdata = clustersdata
+        // 更新状态
+        if (clustersdata.length !== 0) {
+          this.resdata = false
+        }
+        this.loading = false
+      }).catch(error => {
+        // 请求失败
+        this.loading = false
+        this.resdata = true
+        console.log(error)
+      })
+    }
   }
-
 }
 </script>
 
