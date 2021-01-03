@@ -16,6 +16,9 @@
             <li class="nav-item">
               <router-link to="/navigation" class="nav-link">服务管理</router-link>
             </li>
+            <li class="nav-item">
+              <router-link to="/clustermanage" class="nav-link">集群管理</router-link>
+            </li>
           </ul>
         </div>
       </nav>

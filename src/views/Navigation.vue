@@ -6,16 +6,19 @@
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <!---->
         <div
-          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
           <h1 class="h3">服务管理</h1>
           <!--下拉选择表单-->
           <form>
             <div class="row">
               <div class="col">
-                <input type="text" class="form-control form-control-sm" placeholder="First name">
+                <input type="text" class="form-control form-control-sm" placeholder="选择集群">
               </div>
               <div class="col">
-                <input type="text" class="form-control form-control-sm" placeholder="First name">
+                <input type="text" class="form-control form-control-sm" placeholder="名称空间">
+              </div>
+              <div class="col">
+                <input type="text" class="form-control form-control-sm" placeholder="控制器">
               </div>
             </div>
           </form>
@@ -59,6 +62,28 @@
           </table>
         </div>
         <!--内容结束-->
+        <!--*************************************************************-->
+        <!--分页开始-->
+        <div class="">
+          <nav aria-label="Page navigation example">
+            <ul class="pagination">
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Previous">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              <li class="page-item"><a class="page-link" href="#">1</a></li>
+              <li class="page-item"><a class="page-link" href="#">2</a></li>
+              <li class="page-item"><a class="page-link" href="#">3</a></li>
+              <li class="page-item">
+                <a class="page-link" href="#" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+        <!--分页结束-->
       </main>
     </div>
   </div>

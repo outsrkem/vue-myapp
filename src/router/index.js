@@ -8,6 +8,7 @@ const Dashboard = () => import('@/views/Dashboard')
 const Navigation = () => import('@/views/Navigation')
 const ResMonitoring = () => import('@/views/ResMonitoring')
 const NavigationLink = () => import('@/views/NavigationLink')
+const ClusterManage = () => import('@/views/kubernetes/ClusterManage')
 export default new Router({
   // 设置链接激活时使用的 CSS 类名。默认值可以通过路由的构造选项 linkActiveClass 来全局配置
   linkActiveClass: 'active',
@@ -33,6 +34,11 @@ export default new Router({
       // 资源监控
       path: '/resmonitoring',
       component: ResMonitoring
+    },
+    {
+      // 集群管理
+      path: '/clustermanage',
+      component: ClusterManage
     },
     {
       // 默认路由
