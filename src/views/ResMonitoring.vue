@@ -59,70 +59,70 @@
               <td>
                 <div class="progress">
                   <!--"width: 55%;" -->
-                  <div v-if="data.memproportion<=70" class="progress-bar" role="progressbar"
-                       :style="{width: data.memproportion + '%'}"
+                  <div v-if="data.mem_proportion<=70" class="progress-bar" role="progressbar"
+                       :style="{width: data.mem_proportion + '%'}"
                        aria-valuenow="0"
                        aria-valuemin="0"
-                       aria-valuemax="100">{{ data.memproportion }}&nbsp;%
+                       aria-valuemax="100">{{ data.mem_proportion }}&nbsp;%
                   </div>
-                  <div v-if="data.memproportion>70 && data.memproportion<=90" class="progress-bar bg-warning"
+                  <div v-if="data.mem_proportion>70 && data.mem_proportion<=90" class="progress-bar bg-warning"
                        role="progressbar"
-                       :style="{width: data.memproportion + '%'}"
+                       :style="{width: data.mem_proportion + '%'}"
                        aria-valuenow="0"
                        aria-valuemin="0"
-                       aria-valuemax="100">{{ data.memproportion }}&nbsp;%
+                       aria-valuemax="100">{{ data.mem_proportion }}&nbsp;%
                   </div>
-                  <div v-if="data.memproportion>90" class="progress-bar bg-danger"
+                  <div v-if="data.mem_proportion>90" class="progress-bar bg-danger"
                        role="progressbar"
-                       :style="{width: data.memproportion + '%'}"
+                       :style="{width: data.mem_proportion + '%'}"
                        aria-valuenow="0"
                        aria-valuemin="0"
-                       aria-valuemax="100">{{ data.memproportion }}&nbsp;%
+                       aria-valuemax="100">{{ data.mem_proportion }}&nbsp;%
                   </div>
                 </div>
               </td>
               <td>
                 <div class="progress">
-                  <div v-if="data.cpuproportion<=70" class="progress-bar" role="progressbar"
-                       :style="{width: data.cpuproportion + '%'}"
+                  <div v-if="data.cpu_proportion<=70" class="progress-bar" role="progressbar"
+                       :style="{width: data.cpu_proportion + '%'}"
                        aria-valuenow="0"
                        aria-valuemin="0"
-                       aria-valuemax="100">{{ data.cpuproportion }}&nbsp;%
+                       aria-valuemax="100">{{ data.cpu_proportion }}&nbsp;%
                   </div>
-                  <div v-if="data.cpuproportion>70 && data.cpuproportion<=90" class="progress-bar bg-warning"
+                  <div v-if="data.cpu_proportion>70 && data.cpu_proportion<=90" class="progress-bar bg-warning"
                        role="progressbar"
-                       :style="{width: data.cpuproportion + '%'}"
+                       :style="{width: data.cpu_proportion + '%'}"
                        aria-valuenow="0"
                        aria-valuemin="0"
-                       aria-valuemax="100">{{ data.cpuproportion }}&nbsp;%
+                       aria-valuemax="100">{{ data.cpu_proportion }}&nbsp;%
                   </div>
-                  <div v-if="data.cpuproportion>90" class="progress-bar bg-danger" role="progressbar"
-                       :style="{width: data.cpuproportion + '%'}"
+                  <div v-if="data.cpu_proportion>90" class="progress-bar bg-danger" role="progressbar"
+                       :style="{width: data.cpu_proportion + '%'}"
                        aria-valuenow="0"
                        aria-valuemin="0"
-                       aria-valuemax="100">{{ data.cpuproportion }}&nbsp;%
+                       aria-valuemax="100">{{ data.cpu_proportion }}&nbsp;%
                   </div>
                 </div>
               </td>
               <td>
                 <div class="progress">
-                  <div v-if="data.diskproportion<=70" class="progress-bar" role="progressbar"
-                       :style="{width: data.diskproportion + '%'}"
+                  <div v-if="data.disk_proportion<=70" class="progress-bar" role="progressbar"
+                       :style="{width: data.disk_proportion + '%'}"
                        aria-valuenow="0"
                        aria-valuemin="0"
-                       aria-valuemax="100">{{ data.diskproportion }}&nbsp;%
+                       aria-valuemax="100">{{ data.disk_proportion }}&nbsp;%
                   </div>
-                  <div v-if="data.diskproportion>70 && data.diskproportion<=90" class="progress-bar bg-warning"
-                       role="progressbar" :style="{width: data.diskproportion + '%'}"
+                  <div v-if="data.disk_proportion>70 && data.disk_proportion<=90" class="progress-bar bg-warning"
+                       role="progressbar" :style="{width: data.disk_proportion + '%'}"
                        aria-valuenow="0"
                        aria-valuemin="0"
-                       aria-valuemax="100">{{ data.diskproportion }}&nbsp;%
+                       aria-valuemax="100">{{ data.disk_proportion }}&nbsp;%
                   </div>
-                  <div v-if="data.diskproportion>90" class="progress-bar bg-danger" role="progressbar"
-                       :style="{width: data.diskproportion + '%'}"
+                  <div v-if="data.disk_proportion>90" class="progress-bar bg-danger" role="progressbar"
+                       :style="{width: data.disk_proportion + '%'}"
                        aria-valuenow="0"
                        aria-valuemin="0"
-                       aria-valuemax="100">{{ data.diskproportion }}&nbsp;%
+                       aria-valuemax="100">{{ data.disk_proportion }}&nbsp;%
                   </div>
                 </div>
               </td>
@@ -130,6 +130,7 @@
             </tbody>
           </table>
         </div>
+        <div v-if="pageInfo && !resdata">共{{ pageInfo.total }}条，第{{ pageInfo.page }}页，共{{ pageInfo.pageNum }}页</div>
       </main>
     </div>
   </div>
@@ -144,6 +145,7 @@ export default {
     return {
       loading: true,
       resdata: false,
+      pageInfo: null,
       resmonitoring: null
     }
   },
@@ -156,22 +158,24 @@ export default {
     // 发送请求
     axios(options).then(res => {
       const result = res.data
+      const pageInfo = result.response.pageInfo
+      this.pageInfo = pageInfo
       const resmonitoring = result.response.items.map(itme => ({
         id: itme.id,
         hostip: itme.hostip,
         hostname: itme.hostname,
-        memtotal: itme.memtotal,
-        memuse: itme.memuse,
-        memsection: itme.memsection,
-        memproportion: itme.memproportion,
-        cputotal: itme.cputotal,
-        cpuuse: itme.cpuuse,
-        cpusection: itme.cpusection,
-        cpuproportion: itme.cpuproportion,
-        disktotal: itme.disktotal,
-        diskuse: itme.diskuse,
-        disksection: itme.disksection,
-        diskproportion: itme.diskproportion
+        mem_total: itme.mem_total,
+        mem_used: itme.memory.used,
+        mem_section: itme.memory.section,
+        mem_proportion: itme.memory.proportion,
+        cpu_total: itme.cpu.total,
+        cpu_used: itme.cpu.used,
+        cpu_section: itme.cpu.section,
+        cpu_proportion: itme.cpu.proportion,
+        disk_total: itme.disk.total,
+        disk_used: itme.disk.used,
+        disk_section: itme.disk.section,
+        disk_proportion: itme.disk.proportion
       }))
       this.resmonitoring = resmonitoring
       // 更新状态
@@ -199,23 +203,26 @@ export default {
       // 发送请求
       axios(options).then(res => {
         const result = res.data
+        const pageInfo = result.response.pageInfo
+        this.pageInfo = pageInfo
         const resmonitoring = result.response.items.map(itme => ({
           id: itme.id,
           hostip: itme.hostip,
           hostname: itme.hostname,
-          memtotal: itme.memtotal,
-          memuse: itme.memuse,
-          memsection: itme.memsection,
-          memproportion: itme.memproportion,
-          cputotal: itme.cputotal,
-          cpuuse: itme.cpuuse,
-          cpusection: itme.cpusection,
-          cpuproportion: itme.cpuproportion,
-          disktotal: itme.disktotal,
-          diskuse: itme.diskuse,
-          disksection: itme.disksection,
-          diskproportion: itme.diskproportion
+          mem_total: itme.mem_total,
+          mem_used: itme.memory.used,
+          mem_section: itme.memory.section,
+          mem_proportion: itme.memory.proportion,
+          cpu_total: itme.cpu.total,
+          cpu_used: itme.cpu.used,
+          cpu_section: itme.cpu.section,
+          cpu_proportion: itme.cpu.proportion,
+          disk_total: itme.disk.total,
+          disk_used: itme.disk.used,
+          disk_section: itme.disk.section,
+          disk_proportion: itme.disk.proportion
         }))
+        //
         this.resmonitoring = resmonitoring
         // 更新状态
         if (resmonitoring.length !== 0) {
