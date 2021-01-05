@@ -102,7 +102,7 @@ export default {
       addCluster () {
         const options = {
           method: 'POST',
-          headers: {'Content-Type': 'application/json'},
+          headers: {'Content-Type': 'application/json;charset=utf-8'},
           data: this.fileContent,
           url: '/api/v1/common/kubernetes/cluster'
         }

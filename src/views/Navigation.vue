@@ -64,25 +64,7 @@
         <!--内容结束-->
         <!--*************************************************************-->
         <!--分页开始-->
-        <div class="">
-          <nav aria-label="Page navigation example">
-            <ul class="pagination">
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous">
-                  <span aria-hidden="true">&laquo;</span>
-                </a>
-              </li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item">
-                <a class="page-link" href="#" aria-label="Next">
-                  <span aria-hidden="true">&raquo;</span>
-                </a>
-              </li>
-            </ul>
-          </nav>
-        </div>
+        <paging :pageInfo="pageInfo"/>
         <!--分页结束-->
       </main>
     </div>
@@ -92,15 +74,20 @@
 <script>
 import axios from 'axios'
 import Dashboard from './Dashboard'
+import paging from '../paging/paging.vue'
 
 export default {
   name: 'navigation',
-  components: {Dashboard},
+  components: {
+    Dashboard,
+    paging
+  },
   data () {
     return {
       loading: false,
       resdata: true,
-      workingload: null
+      workingload: null,
+      pageInfo: null
     }
   },
   mounted () {
@@ -110,17 +97,19 @@ export default {
     // 发送请求
     axios.get(url).then(res => {
       const result = res.data
-      const workingload = result.response.items.map(itme => ({
-        id: itme.id,
-        name: itme.name,
-        namespace: itme.namespace,
-        labels: itme.labels,
-        replicas: itme.replicas,
-        image: itme.image,
-        imageversion: itme.imageversion,
-        availableReplicas: itme.availableReplicas,
-        creationTimestamp: itme.creationTimestamp,
-        containers: itme.containers
+      const pageInfo = result.response.pageInfo
+      this.pageInfo = pageInfo
+      const workingload = result.response.items.map(item => ({
+        id: item.id,
+        name: item.name,
+        namespace: item.namespace,
+        labels: item.labels,
+        replicas: item.replicas,
+        image: item.image,
+        imageversion: item.imageversion,
+        availableReplicas: item.availableReplicas,
+        creationTimestamp: item.creationTimestamp,
+        containers: item.containers
       }))
       this.workingload = workingload
       // 更新状态
@@ -136,16 +125,17 @@ export default {
     getWorkingLoad () {
       this.workingload = null
       // 构造请求体
-      const namespaces = 'default'
-      const control = 'deployments'
+      const param = 'namespaces=' + 'default' + '&control=' + 'deployments' + '&page_size=' + 10 + '&page=' + 1
       const options = {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
-        url: '/api/v1/common/kubernetes/workingload?namespaces=' + namespaces + '&' + 'control=' + control
+        url: '/api/v1/common/kubernetes/workingload?' + param
       }
       // 发送请求
       axios(options).then(res => {
         const result = res.data
+        const pageInfo = result.response.pageInfo
+        this.pageInfo = pageInfo
         const workingload = result.response.items.map(itme => ({
           id: itme.id,
           name: itme.name,

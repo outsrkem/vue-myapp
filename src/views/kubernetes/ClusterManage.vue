@@ -121,7 +121,7 @@ export default {
       this.clustersdata = null
       const options = {
         method: 'GET',
-        headers: {'Content-Type': 'application/json'},
+        headers: {'Content-Type': 'application/json;charset=utf-8'},
         url: '/api/v1/common/kubernetes/cluster'
       }
       // 发送请求

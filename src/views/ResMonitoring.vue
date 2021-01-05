@@ -4,7 +4,7 @@
       <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
         <!---->
         <div
-          class="d-flex  flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+          class="d-flex flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3">
           <div style="width: 13%;">
             <h1 class="h3">资源监控</h1>
           </div>
@@ -205,23 +205,25 @@ export default {
         const result = res.data
         const pageInfo = result.response.pageInfo
         this.pageInfo = pageInfo
-        const resmonitoring = result.response.items.map(itme => ({
-          id: itme.id,
-          hostip: itme.hostip,
-          hostname: itme.hostname,
-          mem_total: itme.mem_total,
-          mem_used: itme.memory.used,
-          mem_section: itme.memory.section,
-          mem_proportion: itme.memory.proportion,
-          cpu_total: itme.cpu.total,
-          cpu_used: itme.cpu.used,
-          cpu_section: itme.cpu.section,
-          cpu_proportion: itme.cpu.proportion,
-          disk_total: itme.disk.total,
-          disk_used: itme.disk.used,
-          disk_section: itme.disk.section,
-          disk_proportion: itme.disk.proportion
-        }))
+        const resmonitoring = result.response.items.map(itme => {
+          return ({
+            id: itme.id,
+            hostip: itme.hostip,
+            hostname: itme.hostname,
+            mem_total: itme.mem_total,
+            mem_used: itme.memory.used,
+            mem_section: itme.memory.section,
+            mem_proportion: itme.memory.proportion,
+            cpu_total: itme.cpu.total,
+            cpu_used: itme.cpu.used,
+            cpu_section: itme.cpu.section,
+            cpu_proportion: itme.cpu.proportion,
+            disk_total: itme.disk.total,
+            disk_used: itme.disk.used,
+            disk_section: itme.disk.section,
+            disk_proportion: itme.disk.proportion
+          })
+        })
         //
         this.resmonitoring = resmonitoring
         // 更新状态
