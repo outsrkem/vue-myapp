@@ -83,6 +83,10 @@ export default {
     paging
   },
   data () {
+    params: {
+      namespaces: 'default'
+      control: 'deployments'
+    }
     return {
       loading: false,
       resdata: true,
@@ -91,9 +95,11 @@ export default {
     }
   },
   mounted () {
-    const namespaces = 'default'
-    const control = 'deployments'
-    const url = '/api/v1/common/kubernetes/workingload?namespaces=' + namespaces + '&' + 'control=' + control
+    const namespaces='default'
+    const control='deployments'
+    const page_size=10
+    const page=2
+    const url = `/api/v1/common/kubernetes/workingload?namespaces=${namespaces}&control=${control}&page_size=${page_size}&page=${page}`
     // 发送请求
     axios.get(url).then(res => {
       const result = res.data
@@ -125,11 +131,14 @@ export default {
     getWorkingLoad () {
       this.workingload = null
       // 构造请求体
-      const param = 'namespaces=' + 'default' + '&control=' + 'deployments' + '&page_size=' + 10 + '&page=' + 1
+      const namespaces='default'
+      const control='deployments'
+      const page_size=10
+      const page=2
       const options = {
         method: 'GET',
         headers: {'Content-Type': 'application/json'},
-        url: '/api/v1/common/kubernetes/workingload?' + param
+        url: `/api/v1/common/kubernetes/workingload?namespaces=${namespaces}&control=${control}&page_size=${page_size}&page=${page}`
       }
       // 发送请求
       axios(options).then(res => {
